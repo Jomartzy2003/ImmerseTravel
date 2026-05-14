@@ -88,13 +88,12 @@ export function useSavedDestinations() {
       const { data, error } = await supabase
         .from('user_saves')
         .select('destination_id, destinations(*)')
-        .eq('user_id', session.user.id)
+        .eq('user_id', session.user.id) as { data: any[] | null, error: any };
 
       if (error) throw error
 
-      const destinations = data
-        .map((save) => save.destinations)
-        .filter((dest): dest is Destination => dest !== null)
+      const destinations = (data?.map((save: any) => save.destinations) || [])
+        .filter((dest): dest is Destination => dest !== null);
 
       setSavedDestinations(destinations)
       setSavedIds(new Set(destinations.map((d) => d.id)))
@@ -130,13 +129,12 @@ export function useSavedDestinations() {
           return next
         })
       } else {
-        // Add save
         const { error } = await supabase
           .from('user_saves')
           .insert({
-            user_id: session.user.id,
             destination_id: destinationId,
-          })
+            user_id: session.user.id
+          } as any)
 
         if (error) throw error
 

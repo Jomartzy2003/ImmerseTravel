@@ -14,7 +14,7 @@ function App() {
   const location = useLocation()
 
   return (
-    <div className="min-h-screen bg-charcoal relative overflow-x-hidden">
+    <div className="min-h-screen bg-transparent relative overflow-x-hidden">
       {/* 1. THE MESH BACKGROUND (The "Atmosphere") */}
       <div className="mesh-bg" /> 
 
