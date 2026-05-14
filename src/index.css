@@ -1,0 +1,222 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =====================================================
+   GLOBAL STYLES & CINEMATIC GRAIN OVERLAY
+   ===================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-charcoal text-champagne-cream font-inter;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Cinematic Grain/Noise Overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  animation: grain 8s steps(10) infinite;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
+}
+
+/* =====================================================
+   GLASSMORPHISM UTILITY CLASSES
+   ===================================================== */
+
+@layer components {
+  /* High-end Glass effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.03); /* Very transparent */
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  /* Lighter version for buttons/menus */
+  .glass-light {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* The Hover effect for glass buttons */
+  .btn-glass {
+    @apply glass-light px-6 py-2 rounded-full font-medium transition-all duration-300
+    hover:bg-white/20 hover:scale-105 active:scale-95 text-champagne-cream;
+  }
+}
+
+/* =====================================================
+   SMOOTH SCROLLING (Lenis will override)
+   ===================================================== */
+
+.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* =====================================================
+   TYPOGRAPHY ENHANCEMENTS
+   ===================================================== */
+
+.text-hero {
+  @apply font-playfair text-7xl md:text-8xl lg:text-9xl font-bold leading-none tracking-tight;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.text-display {
+  @apply font-playfair text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight;
+}
+
+.text-body {
+  @apply font-inter text-base md:text-lg leading-relaxed;
+}
+
+/* =====================================================
+   BUTTON STYLES
+   ===================================================== */
+
+.btn-primary {
+  @apply px-8 py-4 bg-forest-mist text-charcoal font-semibold rounded-lg 
+         transition-all duration-300 hover:bg-forest-mist/90 hover:scale-105
+         active:scale-95 shadow-lg hover:shadow-xl;
+}
+
+.btn-glass {
+  @apply px-8 py-4 glass text-champagne-cream font-semibold rounded-lg
+         transition-all duration-300 hover:bg-champagne-cream/20 hover:scale-105
+         active:scale-95;
+}
+
+/* =====================================================
+   CUSTOM SCROLLBAR
+   ===================================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-charcoal;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-forest-mist/50 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-forest-mist/70;
+}
+
+/* =====================================================
+   LOADING STATES
+   ===================================================== */
+
+.skeleton {
+  @apply animate-pulse bg-champagne-cream/10 rounded;
+}
+
+/* =====================================================
+   ANIMATIONS
+   ===================================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes mesh-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.mesh-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  /* Adjust colors to match your theme */
+  background: linear-gradient(-45deg, #0f172a, #1e293b, #134e4a, #064e3b);
+  background-size: 400% 400%;
+  animation: mesh-gradient 15s ease infinite;
+}
+
+/* =====================================================
+   ACCESSIBILITY
+   ===================================================== */
+
+.focus-visible:focus {
+  @apply outline-none ring-2 ring-forest-mist ring-offset-2 ring-offset-charcoal;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  body::before {
+    animation: none;
+  }
+}
