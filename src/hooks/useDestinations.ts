@@ -132,14 +132,14 @@ export function useSavedDestinations() {
         const { error } = await supabase
           .from('user_saves')
           .insert({
-            destination_id: destinationId,
+            destination_id: destinationId,  
             user_id: session.user.id
           } as any)
 
         if (error) throw error
 
         setSavedIds((prev) => new Set(prev).add(destinationId))
-      }
+      } 
 
       // Refetch to update the list
       await fetchSavedDestinations()
