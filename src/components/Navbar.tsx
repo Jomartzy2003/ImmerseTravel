@@ -3,6 +3,43 @@ import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/hooks/useAuth'
 import AuthModal from './AuthModal'
+import { supabase } from '@/lib/supabase'
+
+  
+  const handleGoogleSignIn = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          // window.location.origin dynamically detects if you're on http://localhost:5173
+          // or https://immerse-travel.vercel.app and routes back automatically!
+          redirectTo: window.location.origin 
+        }
+      })
+
+      if (error) throw error
+    } catch (error: any) {
+      console.error('Error signing in with Google:', error.message)
+      alert('Authentication failed. Please try again.')
+    }
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-transparent">
+      <div className="p-8 bg-charcoal/50 backdrop-blur-md rounded-xl border border-champagne-cream/10 text-center">
+        <h2 className="text-2xl font-bold text-champagne-cream mb-6">Welcome to Vivid Horizons</h2>
+        
+        {/* Attach the handler to your button here */}
+        <button
+          onClick={handleGoogleSignIn}
+          className="flex items-center justify-center gap-3 w-full px-6 py-3 bg-white text-black font-medium rounded-lg hover:bg-champagne-cream transition-colors duration-200"
+        >
+          {/* Optional: Add a Google Icon SVG here */}
+          Continue with Google
+        </button>
+      </div>
+    </div>
+  )
+}
 
 export default function Navbar() {
   const { user, profile, signOut } = useAuth()
